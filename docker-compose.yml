@@ -13,3 +13,23 @@ services:
     ports:
       - "3040:3040"
     command: sh -c 'npm run dev'
+    networks:
+      - dockerhub-network
+
+  dockerhub-nginx:
+    build:
+      context: ./nginx/
+      dockerfile: ./Dockerfile
+    image: dockerhub-nginx
+    container_name: dockerhub-nginx
+    ports:
+      - "8808:80"
+      - "443:443"
+    volumes: 
+      - ./nginx/certs:/etc/nginx/certs
+    networks:
+      - dockerhub-network
+
+networks:
+  dockerhub-network:
+    driver: bridge
